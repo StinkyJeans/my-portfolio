@@ -203,32 +203,39 @@ export default function Portfolio() {
       <section className="relative pt-32 pb-16 text-center">
         <div className="max-w-4xl mx-auto px-4">
           <div className={`transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <div className="w-32 h-32 mx-auto mb-8 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full flex items-center justify-center text-4xl font-bold shadow-2xl">
-              NJA
+            <div className="w-32 h-32 mx-auto mb-8 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full flex items-center justify-center shadow-2xl overflow-hidden">
+              <img 
+                src="/images/pfp linkedin.png" 
+                alt="Profile Picture" 
+                className="w-full h-full object-cover rounded-full"
+              />
             </div>
             <h2 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-4 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent min-h-[4rem]">
-              {typedText}
-              <span className="animate-pulse">|</span>
-            </h2>
+             {typedText}
+             <span className="animate-pulse">|</span>
+           </h2>
             <p className="text-xl md:text-2xl text-gray-400 mb-4">Information Technology Graduate</p>
             <p className="text-lg text-gray-500 max-w-2xl mx-auto mb-8">
-              Enthusiastic about web development and committed to continuous learning.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
-              <button 
-                onClick={() => setShowContactForm(true)}
-                className="cursor-pointer px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full font-medium hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-xl"
-              >
-                Get In Touch
-              </button>
+             Enthusiastic about web development and committed to continuous learning.
+           </p>
+           <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
+             <button 
+               onClick={() => setShowContactForm(true)}
+               className="cursor-pointer px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full font-medium hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-xl"
+             >
+               Get In Touch
+             </button>
             </div>
-            <div className="flex justify-center gap-6">
-              <a href="#" className="text-2xl hover:text-blue-400 transition-colors duration-300 hover:scale-125 transform">
-                <FaGithub />
+           <div className="flex justify-center gap-6">
+             <a href="https://github.com/StinkyJeans" className="text-2xl hover:text-blue-400 transition-colors duration-300 hover:scale-125 transform">
+               <FaGithub />
+             </a>
+             <a href="https://www.linkedin.com/in/nelvim-john-anoc-6762a0374/" className="text-2xl hover:text-blue-400 transition-colors duration-300 hover:scale-125 transform">
+                <FaLinkedin />
               </a>
-            </div>
-          </div>
-        </div>
+           </div>
+         </div>
+       </div>
       </section>
 
       <div className="max-w-6xl mx-auto px-4 py-12 space-y-24 relative z-10">
