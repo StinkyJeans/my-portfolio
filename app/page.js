@@ -10,6 +10,7 @@ export default function Portfolio() {
   const [typedText, setTypedText] = useState('');
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showContactForm, setShowContactForm] = useState(false);
+  const [showWorkImage, setShowWorkImage] = useState(false);
 
   const fullText = "Nelvim John M. Anoc";
 
@@ -52,12 +53,6 @@ export default function Portfolio() {
   ];
 
   const projects = [
-    {
-      title: "Church Management System",
-      description: "participated in the development of a church project based in Butuan City, which aimed to upgrade their old system for booking and management; the project's scope covers the entire Philippines and provided me with hands-on experience in full-stack development.",
-      tech: ["Next.js", "Node.js", "Database"],
-      icon: "🏛️"
-    },
     {
       title: "Air Quality Monitor",
       description: "Developed a safety system using microcontrollers to detect gasoline leaks in restaurants. Real-time air quality monitoring and automatic alerts were key features.",
@@ -113,7 +108,7 @@ export default function Portfolio() {
           ×
         </button>
         <h3 className="text-2xl font-bold mb-6 text-white">Let's Connect!</h3>
-        <form className="space-y-4">
+        <div className="space-y-4">
           <input 
             type="text" 
             placeholder="Your Name" 
@@ -130,12 +125,12 @@ export default function Portfolio() {
             className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <button 
-            type="submit" 
+            onClick={() => setShowContactForm(false)}
             className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg font-medium hover:scale-105 transition-transform duration-300 cursor-pointer"
           >
             Send Message
           </button>
-        </form>
+        </div>
       </div>
     </div>
   );
@@ -294,7 +289,7 @@ export default function Portfolio() {
           <h2 className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
             Featured Projects
           </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 cursor-pointer">
+          <div className="grid  gap-8 cursor-pointer">
             {projects.map((project, index) => (
               <div key={index} className={`backdrop-blur-xl ${darkMode ? 'bg-white/10' : 'bg-black/10'} rounded-3xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-500 hover:scale-105 hover:shadow-2xl group`}>
                 <div className="text-4xl mb-4">{project.icon}</div>
@@ -328,11 +323,33 @@ export default function Portfolio() {
               <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-2xl">
                 💼
               </div>
-              <div>
+              <div className="flex-1">
                 <p className="text-xl font-medium">On-the-Job Training</p>
                 <p className="text-gray-400 mt-2">
                   I participated in the development of a church project based in Butuan City, which aimed to upgrade their old system for booking and management; the project's scope covers the entire Philippines and provided me with hands-on experience in full-stack development.
                 </p>
+                <div className="flex justify-end mt-5">
+                  <button 
+                    onClick={() => setShowWorkImage(!showWorkImage)}
+                    className="text-blue-400 hover:text-blue-300 transition-colors duration-300 cursor-pointer"
+                  >
+                    View Details →
+                  </button>
+                </div>
+                
+                {/* Image that appears when View Details is clicked */}
+                {showWorkImage && (
+                  <div className="mt-6 overflow-hidden rounded-xl transition-all duration-500 ease-in-out">
+                    <img 
+                      src="/images/DIO.png" 
+                      alt="Work Experience Project" 
+                      className="w-full h-full object-cover rounded-xl shadow-lg hover:scale-105 transition-transform duration-300"
+                    />
+                    <p className="text-center text-gray-400 text-sm mt-2">
+                      Church Management System Development Project
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
