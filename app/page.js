@@ -108,7 +108,7 @@ export default function Portfolio() {
       <div className="absolute right-0 top-0 h-full w-full max-w-md bg-gradient-to-br from-slate-900 to-purple-900 p-6 shadow-2xl transform transition-transform duration-300">
         <button 
           onClick={() => setShowContactForm(false)}
-          className="absolute top-4 right-4 text-white hover:text-gray-300 text-2xl"
+          className="absolute top-4 right-4 text-white hover:text-gray-300 text-2xl cursor-pointer"
         >
           ×
         </button>
@@ -131,7 +131,7 @@ export default function Portfolio() {
           />
           <button 
             type="submit" 
-            className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg font-medium hover:scale-105 transition-transform duration-300"
+            className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg font-medium hover:scale-105 transition-transform duration-300 cursor-pointer"
           >
             Send Message
           </button>
