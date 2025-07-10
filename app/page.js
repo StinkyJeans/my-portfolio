@@ -304,9 +304,6 @@ export default function Portfolio() {
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-500">{project.status}</span>
-                  <button className="text-blue-400 hover:text-blue-300 transition-colors duration-300">
-                    View Details →
-                  </button>
                 </div>
               </div>
             ))}
