@@ -11,7 +11,7 @@ export default function Portfolio() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showContactForm, setShowContactForm] = useState(false);
   const [showWorkImage, setShowWorkImage] = useState(false);
-
+  const [showThesisImage, setShowThesisImage] = useState(false);
   const fullText = "Nelvim John M. Anoc";
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function Portfolio() {
 
   const projects = [
     {
-      title: "Air Quality Monitor",
+      title: "Enhancing Safety: Implementing Microcontroller-Based Air Quality Monitoring Systems for Gasoline Leak Detection in Restaurants",
       description: "Developed a safety system using microcontrollers to detect gasoline leaks in restaurants. Real-time air quality monitoring and automatic alerts were key features.",
       tech: ["Arduino", "Sensors", "Real-time Data"],
       status: "Thesis Project",
@@ -304,7 +304,26 @@ export default function Portfolio() {
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-500">{project.status}</span>
+                  <button 
+                  onClick={() => setShowThesisImage(!showThesisImage)}
+                  className="text-blue-400 hover:text-blue-300 transition-colors duration-300 cursor-pointer">
+                    
+                    View Details →
+                  </button>
                 </div>
+                 {/* Image that appears when View Details is clicked */}
+                {showThesisImage && (
+                  <div className="mt-6 overflow-hidden rounded-xl transition-all duration-500 ease-in-out">
+                    <img 
+                      src="/images/TEst.png" 
+                      alt="Thesis Project" 
+                      className="w-full h-full object-cover rounded-xl shadow-lg hover:scale-105 transition-transform duration-300"
+                    />
+                    <p className="text-center text-gray-400 text-sm mt-2">
+                      Gas Leak Detection System
+                    </p>
+                  </div>
+                )}
               </div>
             ))}
           </div>
