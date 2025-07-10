@@ -205,7 +205,7 @@ export default function Portfolio() {
           <div className={`transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <div className="w-32 h-32 mx-auto mb-8 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full flex items-center justify-center shadow-2xl overflow-hidden">
               <img 
-                src="/images/pfp linkedin.png" 
+                src="/images/pfp.jpg" 
                 alt="Profile Picture" 
                 className="w-full h-full object-cover rounded-full"
               />
