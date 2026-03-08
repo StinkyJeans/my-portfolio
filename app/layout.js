@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "My Portfolio",
-  description: "Created by Nelvim John M. Anoc",
+  description: "Created by me Nelvim John M. Anoc for my portfolio",
 };
 
 export default function RootLayout({ children }) {
