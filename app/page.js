@@ -62,6 +62,11 @@ export default function Portfolio() {
       secondaryUrl: "https://tally-pos-admin.vercel.app/",
       badge: "Web POS",
       tech: ["POS", "Inventory", "Admin Dashboard"],
+      images: [
+        "/images/tally-admin-inventory.png",
+        "/images/tally-admin-sales.png",
+        "/images/tally-admin-audit.png",
+      ],
     },
   ];
 
@@ -293,6 +298,29 @@ export default function Portfolio() {
                   className="mb-4 h-44 w-full cursor-zoom-in rounded-2xl object-cover shadow-lg transition hover:opacity-90"
                   onClick={() => setSelectedImage({ src: app.image, alt: app.title })}
                 />
+              ) : null}
+              {app.images ? (
+                <div className="mb-4">
+                  <p className={`mb-2 text-xs font-semibold uppercase tracking-wide ${darkMode ? "text-slate-300" : "text-slate-600"}`}>
+                    Admin Screens
+                  </p>
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    {app.images.map((imageSrc, imageIndex) => (
+                      <img
+                        key={imageSrc}
+                        src={imageSrc}
+                        alt={`${app.title} admin screen ${imageIndex + 1}`}
+                        className="h-36 w-full cursor-zoom-in rounded-xl object-cover shadow-md transition hover:opacity-90"
+                        onClick={() =>
+                          setSelectedImage({
+                            src: imageSrc,
+                            alt: `${app.title} admin screen ${imageIndex + 1}`,
+                          })
+                        }
+                      />
+                    ))}
+                  </div>
+                </div>
               ) : null}
               <div className="mb-5 flex flex-wrap gap-2">
                 {app.tech.map((item) => (
