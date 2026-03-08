@@ -54,6 +54,15 @@ export default function Portfolio() {
       badge: "Ecommerce",
       tech: ["Next.js", "Frontend UI", "Deployment"],
     },
+    {
+      title: "Tally POS & Inventory System",
+      description:
+        "A web-based POS and inventory system for daily sales operations, barcode scanning, stock deduction, and admin-side management.",
+      url: "https://tally-pos.vercel.app/",
+      secondaryUrl: "https://tally-pos-admin.vercel.app/",
+      badge: "Web POS",
+      tech: ["POS", "Inventory", "Admin Dashboard"],
+    },
   ];
 
   const particles = useMemo(
@@ -298,14 +307,26 @@ export default function Portfolio() {
                 ))}
               </div>
               {app.url ? (
-                <a
-                  href={app.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-blue-400 transition group-hover:text-blue-300"
-                >
-                  Visit Live Site <FaExternalLinkAlt className="h-3 w-3" />
-                </a>
+                <div className="flex flex-wrap gap-3">
+                  <a
+                    href={app.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-blue-400 transition group-hover:text-blue-300"
+                  >
+                    Open App <FaExternalLinkAlt className="h-3 w-3" />
+                  </a>
+                  {app.secondaryUrl ? (
+                    <a
+                      href={app.secondaryUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 text-sm font-semibold text-violet-400 transition hover:text-violet-300"
+                    >
+                      Open Admin <FaExternalLinkAlt className="h-3 w-3" />
+                    </a>
+                  ) : null}
+                </div>
               ) : (
                 <p className={`text-sm font-semibold ${darkMode ? "text-slate-300" : "text-slate-600"}`}>
                   Academic project highlight
