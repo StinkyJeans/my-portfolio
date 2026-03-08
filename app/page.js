@@ -1,432 +1,376 @@
 "use client";
 
-import { EnvelopeIcon, MapPinIcon, DocumentArrowDownIcon, SunIcon, MoonIcon } from '@heroicons/react/24/solid';
-import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
-import { useState, useEffect } from 'react';
+import { EnvelopeIcon, MapPinIcon, MoonIcon, SunIcon } from "@heroicons/react/24/solid";
+import { FaExternalLinkAlt, FaGithub, FaLinkedin } from "react-icons/fa";
+import { useEffect, useMemo, useState } from "react";
+import ConctactForm from "./modal/conctactForm";
+import ImageModal from "./modal/ImageModal";
 
 export default function Portfolio() {
-  const [isLoaded, setIsLoaded] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
-  const [typedText, setTypedText] = useState('');
+  const [typedText, setTypedText] = useState("");
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [showContactForm, setShowContactForm] = useState(false);
-  const [showWorkImage, setShowWorkImage] = useState(false);
-  const [showThesisImage, setShowThesisImage] = useState(false);
+  const [showContactModal, setShowContactModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
   const fullText = "Nelvim John M. Anoc";
 
+  const skills = [
+    "JavaScript",
+    "React",
+    "Next.js",
+    "Tailwind CSS",
+    "Node.js",
+    "MongoDB",
+    "Supabase",
+    "PostgreSQL",
+    "Claude (Anthropic)",
+    "Cursor IDE",
+    "AI-Assisted Development",
+    "Vibe Coding",
+  ];
+
+  const featuredApps = [
+    {
+      title: "Gas Leak Detection Thesis Project",
+      description:
+        "Enhancing Safety: Implementing a microcontroller-based air quality monitoring system for gasoline leak detection in restaurants with real-time alerts.",
+      badge: "Academic Thesis",
+      tech: ["Arduino", "Sensors", "Real-time Monitoring"],
+      image: "/images/TEst.png",
+    },
+    {
+      title: "Resume Web App",
+      description:
+        "A personal resume site highlighting my vibe-coding workflow and AI-assisted full-stack development approach.",
+      url: "https://resume-nelvim.vercel.app/resume_nelvim.html",
+      badge: "Personal Branding",
+      tech: ["Next.js", "JavaScript", "Claude + Cursor"],
+    },
+    {
+      title: "Totally Normal Store",
+      description:
+        "A deployed ecommerce project with product browsing and customer-facing shopping flow.",
+      url: "https://totallynormalstore.vercel.app/",
+      badge: "Ecommerce",
+      tech: ["Next.js", "Frontend UI", "Deployment"],
+    },
+  ];
+
+  const particles = useMemo(
+    () =>
+      Array.from({ length: 16 }, (_, i) => {
+        const pseudoRandom = (salt) => {
+          const value = Math.sin((i + 1) * 991 + salt * 971) * 10000;
+          return value - Math.floor(value);
+        };
+
+        return {
+          left: `${(pseudoRandom(1) * 100).toFixed(4)}%`,
+          top: `${(pseudoRandom(2) * 100).toFixed(4)}%`,
+          animationDelay: `${(pseudoRandom(3) * 2).toFixed(5)}s`,
+          animationDuration: `${(2 + pseudoRandom(4) * 2).toFixed(5)}s`,
+        };
+      }),
+    []
+  );
+
   useEffect(() => {
-    setIsLoaded(true);
-    
-    // Typing animation
     let index = 0;
     const timer = setInterval(() => {
       if (index < fullText.length) {
         setTypedText(fullText.slice(0, index + 1));
-        index++;
+        index += 1;
       } else {
         clearInterval(timer);
       }
-    }, 100);
+    }, 95);
 
-    // Scroll progress
     const handleScroll = () => {
       const scrolled = window.scrollY;
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = (scrolled / maxScroll) * 100;
+      const progress = maxScroll > 0 ? (scrolled / maxScroll) * 100 : 0;
       setScrollProgress(progress);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
       clearInterval(timer);
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [fullText]);
+
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setShowContactModal(false);
+        setSelectedImage(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+    return () => {
+      window.removeEventListener("keydown", handleEscape);
     };
   }, []);
 
-  const skills = [
-    { name: 'JavaScript',  color: 'from-yellow-400 to-orange-500' },
-    { name: 'HTML/CSS',  color: 'from-blue-400 to-blue-600' },
-    { name: 'Next.js',  color: 'from-gray-400 to-gray-600' },
-    { name: 'Tailwind CSS',  color: 'from-cyan-400 to-blue-500' },
-    { name: 'React',  color: 'from-blue-300 to-blue-500' },
-    { name: 'Node.js',  color: 'from-green-400 to-green-600' }
-  ];
-
-  const projects = [
-    {
-      title: "Enhancing Safety: Implementing Microcontroller-Based Air Quality Monitoring Systems for Gasoline Leak Detection in Restaurants",
-      description: "Developed a safety system using microcontrollers to detect gasoline leaks in restaurants. Real-time air quality monitoring and automatic alerts were key features.",
-      tech: ["Arduino", "Sensors", "Real-time Data"],
-      status: "Thesis Project",
-      icon: "🛡️"
-    },
-  ];
-
-  const CircularProgress = ({ percentage, color, children }) => (
-    <div className="relative w-24 h-24 mx-auto">
-      <svg className="w-24 h-24 transform -rotate-90">
-        <circle
-          cx="48"
-          cy="48"
-          r="40"
-          stroke="rgba(255,255,255,0.1)"
-          strokeWidth="8"
-          fill="none"
-        />
-        <circle
-          cx="48"
-          cy="48"
-          r="40"
-          stroke="url(#gradient)"
-          strokeWidth="8"
-          fill="none"
-          strokeDasharray={`${2 * Math.PI * 40}`}
-          strokeDashoffset={`${2 * Math.PI * 40 * (1 - percentage / 100)}`}
-          className="transition-all duration-1000 ease-out"
-        />
-        <defs>
-          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" className="text-blue-400" stopColor="currentColor" />
-            <stop offset="100%" className="text-purple-400" stopColor="currentColor" />
-          </linearGradient>
-        </defs>
-      </svg>
-      <div className="absolute inset-0 flex items-center justify-center">
-        <span className="text-lg font-bold">{percentage}%</span>
-      </div>
-    </div>
-  );
-
-  const ContactForm = () => (
-    <div className={`fixed inset-0 z-50 ${showContactForm ? 'block' : 'hidden'}`}>
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowContactForm(false)} />
-      <div className="absolute right-0 top-0 h-full w-full max-w-md bg-gradient-to-br from-slate-900 to-purple-900 p-6 shadow-2xl transform transition-transform duration-300">
-        <button 
-          onClick={() => setShowContactForm(false)}
-          className="absolute top-4 right-4 text-white hover:text-gray-300 text-2xl cursor-pointer"
-        >
-          ×
-        </button>
-        <h3 className="text-2xl font-bold mb-6 text-white">Let's Connect!</h3>
-        <div className="space-y-4">
-          <input 
-            type="text" 
-            placeholder="Your Name" 
-            className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-          <input 
-            type="email" 
-            placeholder="Your Email" 
-            className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-          <textarea 
-            placeholder="Your Message" 
-            rows="4"
-            className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-          <button 
-            onClick={() => setShowContactForm(false)}
-            className="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg font-medium hover:scale-105 transition-transform duration-300 cursor-pointer"
-          >
-            Send Message
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-
   return (
-    <main className={`min-h-screen transition-colors duration-500 ${darkMode ? 'bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white' : 'bg-gradient-to-br from-gray-50 via-blue-50 to-gray-50 text-gray-900'} relative overflow-hidden`}>
-      {/* Scroll Progress Bar */}
-      <div className="fixed top-0 left-0 right-0 h-1 bg-black/20 z-50">
-        <div 
-          className="h-full bg-gradient-to-r from-blue-400 to-purple-400 transition-all duration-300"
+    <main
+      className={`relative min-h-screen overflow-hidden transition-colors duration-500 ${
+        darkMode
+          ? "bg-slate-950 text-slate-100"
+          : "bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 text-slate-900"
+      }`}
+    >
+      <div className="fixed left-0 right-0 top-0 z-50 h-1 bg-black/20">
+        <div
+          className="h-full bg-gradient-to-r from-blue-500 via-violet-500 to-pink-500 transition-all duration-300"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
 
-      {/* Floating Particles */}
-      <div className="absolute inset-0 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        {particles.map((particle, index) => (
           <div
-            key={i}
-            className="absolute w-2 h-2 bg-blue-400/30 rounded-full animate-pulse"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 2}s`,
-              animationDuration: `${2 + Math.random() * 2}s`
-            }}
+            key={index}
+            className="absolute h-2 w-2 rounded-full bg-blue-400/40 animate-pulse"
+            style={particle}
           />
         ))}
+        <div className="absolute -top-1/3 right-[-10%] h-[35rem] w-[35rem] rounded-full bg-blue-500/20 blur-3xl" />
+        <div className="absolute -bottom-1/3 left-[-10%] h-[35rem] w-[35rem] rounded-full bg-purple-500/20 blur-3xl" />
       </div>
 
-      {/* Animated Background */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-1/2 -right-1/2 w-full h-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-gradient-to-tr from-purple-500/20 to-pink-500/20 rounded-full blur-3xl animate-pulse delay-700" />
-      </div>
+      <header
+        className={`sticky top-0 z-40 border-b backdrop-blur-xl ${
+          darkMode ? "border-white/10 bg-slate-900/60" : "border-slate-300/60 bg-white/70"
+        }`}
+      >
+        <nav className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4">
+          <a href="#home" className="text-lg font-bold tracking-tight">
+            Nelvim<span className="text-blue-500">.dev</span>
+          </a>
 
-      {/* Navigation */}
-      <header className={`fixed top-0 left-0 right-0 z-40 backdrop-blur-md ${darkMode ? 'bg-white/10' : 'bg-black/10'} border-b border-white/20`}>
-        <nav className="max-w-6xl mx-auto flex justify-between items-center p-4">
-          <h1 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-            Nelvim John M. Anoc
-          </h1>
-          <div className="flex items-center gap-6">
-            <ul className="hidden md:flex gap-6 text-sm font-medium">
-              {['education', 'thesis', 'projects', 'experience', 'skills', 'contact'].map((item) => (
-                <li key={item}>
-                  <a href={`#${item}`} className="hover:text-blue-400 transition-colors duration-300 relative group capitalize">
-                    {item}
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400 group-hover:w-full transition-all duration-300" />
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <button 
-              onClick={() => setDarkMode(!darkMode)}
-              className="p-2 rounded-full hover:bg-white/10 transition-colors duration-300"
-            >
-              {darkMode ? <SunIcon className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
-            </button>
+          <div className="hidden items-center gap-6 text-sm font-medium md:flex">
+            <a href="#projects" className="transition hover:text-blue-500">
+              Projects
+            </a>
+            <a href="#skills" className="transition hover:text-blue-500">
+              Skills
+            </a>
+            <a href="#contact" className="transition hover:text-blue-500">
+              Contact
+            </a>
           </div>
+
+          <button
+            onClick={() => setDarkMode((prev) => !prev)}
+            className={`rounded-full p-2 transition ${
+              darkMode ? "hover:bg-white/10" : "hover:bg-slate-200"
+            }`}
+            aria-label="Toggle theme"
+          >
+            {darkMode ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
+          </button>
         </nav>
       </header>
 
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-16 text-center">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className={`transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <div className="w-32 h-32 mx-auto mb-8 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full flex items-center justify-center shadow-2xl overflow-hidden">
-              <img 
-                src="/images/pfp.jpg" 
-                alt="Profile Picture" 
-                className="w-full h-full object-cover rounded-full"
-              />
+      <section id="home" className="relative z-10 mx-auto max-w-6xl px-4 pb-16 pt-20 md:pt-28">
+        <div className="grid items-center gap-10 md:grid-cols-2">
+          <div>
+            <p className="mb-3 inline-flex rounded-full border border-blue-400/40 bg-blue-500/10 px-4 py-1 text-sm text-blue-300">
+              Open to Work - Web Developer
+            </p>
+            <h1 className="mb-4 min-h-[4rem] text-4xl font-extrabold leading-tight md:text-6xl">
+              <span className="bg-gradient-to-r from-blue-400 via-violet-400 to-pink-400 bg-clip-text text-transparent">
+                {typedText}
+              </span>
+              <span className="animate-pulse text-blue-400">|</span>
+            </h1>
+            <p className={`mb-7 max-w-xl text-base md:text-lg ${darkMode ? "text-slate-300" : "text-slate-700"}`}>
+              Fresh BSIT graduate from Butuan City focused on building modern full-stack web apps with
+              clean UI, practical backend integration, and strong product thinking. I use an AI-assisted
+              workflow with Claude and Cursor IDE to ship projects faster while keeping code organized.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <a
+                href="#projects"
+                className="rounded-full bg-gradient-to-r from-blue-500 to-violet-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 transition hover:scale-105"
+              >
+                View Projects
+              </a>
+              <button
+                type="button"
+                onClick={() => setShowContactModal(true)}
+                className={`rounded-full border px-6 py-3 text-sm font-semibold transition ${
+                  darkMode ? "border-white/20 hover:bg-white/10" : "border-slate-300 hover:bg-slate-100"
+                }`}
+              >
+                Contact Me
+              </button>
             </div>
-            <h2 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-4 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent min-h-[4rem]">
-             {typedText}
-             <span className="animate-pulse">|</span>
-           </h2>
-            <p className="text-xl md:text-2xl text-gray-400 mb-4">Information Technology Graduate</p>
-            <p className="text-lg text-gray-500 max-w-2xl mx-auto mb-8">
-             Enthusiastic about web development and committed to continuous learning.
-           </p>
-           <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
-             <button 
-               onClick={() => setShowContactForm(true)}
-               className="cursor-pointer px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full font-medium hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-xl"
-             >
-               Get In Touch
-             </button>
-            </div>
-           <div className="flex justify-center gap-6">
-             <a href="https://github.com/StinkyJeans" className="text-2xl hover:text-blue-400 transition-colors duration-300 hover:scale-125 transform">
-               <FaGithub />
-             </a>
-             <a href="https://www.linkedin.com/in/nelvim-john-anoc-6762a0374/" className="text-2xl hover:text-blue-400 transition-colors duration-300 hover:scale-125 transform">
+            <div className="mt-7 flex items-center gap-5 text-2xl">
+              <a href="https://github.com/StinkyJeans" target="_blank" rel="noreferrer" className="transition hover:text-blue-500">
+                <FaGithub />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/nelvim-john-anoc-6762a0374/"
+                target="_blank"
+                rel="noreferrer"
+                className="transition hover:text-blue-500"
+              >
                 <FaLinkedin />
               </a>
-           </div>
-         </div>
-       </div>
+            </div>
+          </div>
+
+          <div
+            className={`rounded-3xl border p-7 shadow-2xl ${
+              darkMode ? "border-white/10 bg-slate-900/70" : "border-slate-200 bg-white/80"
+            }`}
+          >
+            <img
+              src="/images/pfp.jpg"
+              alt="Nelvim profile"
+              className="mb-5 h-44 w-44 rounded-2xl object-cover shadow-xl"
+            />
+            <h2 className="text-2xl font-bold">Full-Stack Developer</h2>
+            <p className={`mt-2 text-sm ${darkMode ? "text-slate-300" : "text-slate-600"}`}>
+              Web Developer - Vibe Coder - Full-Stack. Building frontend, backend, and database-driven
+              projects using Next.js and modern AI tools.
+            </p>
+            <div className="mt-6 grid grid-cols-2 gap-3 text-sm">
+              <div className={`rounded-xl p-3 ${darkMode ? "bg-white/5" : "bg-slate-100"}`}>
+                <p className="font-semibold">Degree</p>
+                <p className={darkMode ? "text-slate-300" : "text-slate-600"}>BSIT</p>
+              </div>
+              <div className={`rounded-xl p-3 ${darkMode ? "bg-white/5" : "bg-slate-100"}`}>
+                <p className="font-semibold">Location</p>
+                <p className={darkMode ? "text-slate-300" : "text-slate-600"}>Butuan City</p>
+              </div>
+            </div>
+            <div className={`mt-3 rounded-xl p-3 text-sm ${darkMode ? "bg-white/5" : "bg-slate-100"}`}>
+              <p className="font-semibold">School</p>
+              <p className={darkMode ? "text-slate-300" : "text-slate-600"}>
+                Father Saturnino Urios University
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
 
-      <div className="max-w-6xl mx-auto px-4 py-12 space-y-24 relative z-10">
-        {/* Education */}
-        <section id="education" className="group">
-          <h2 className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-            Education
-          </h2>
-          <div className={`backdrop-blur-xl ${darkMode ? 'bg-white/10' : 'bg-black/10'} cursor-pointer rounded-3xl p-8 border border-white/20 hover:bg-white/20 transition-all duration-500 group-hover:scale-105 hover:shadow-2xl`}>
-            <div className="flex items-center gap-6">
-              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-2xl">
-                🎓
-              </div>
-              <div>
-                <p className="text-xl font-medium">Bachelor of Science in Information Technology</p>
-                <p className="text-gray-400 mt-2">
-                  Specialized in web development, systems analysis, and technology implementation.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+      <section id="projects" className="relative z-10 mx-auto max-w-6xl px-4 py-16">
+        <h3 className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-blue-400">Featured Work</h3>
+        <h2 className="mb-10 text-3xl font-bold md:text-4xl">Featured projects and deployed apps</h2>
 
-        {/* Thesis */}
-        <section id="thesis" className="group">
-          <h2 className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-            Thesis Project
-          </h2>
-          <div className={`backdrop-blur-xl ${darkMode ? 'bg-white/10' : 'bg-black/10'} cursor-pointer rounded-3xl p-8 border border-white/20 hover:bg-white/20 transition-all duration-500 group-hover:scale-105 hover:shadow-2xl`}>
-            <div className="flex items-start gap-6">
-              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-blue-600 rounded-full flex items-center justify-center text-2xl">
-                🛡️
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold text-blue-400 mb-2">
-                  Enhancing Safety: Implementing Microcontroller-Based Air Quality Monitoring Systems for Gasoline Leak Detection in Restaurants
-                </h3>
-                <p className="text-gray-400 mt-2 mb-4">
-                  Developed a safety system using microcontrollers to detect gasoline leaks in restaurants.
-                  Real-time air quality monitoring and automatic alerts were key features.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {['Real-time gas detection', 'Automatic safety alerts', 'Data monitoring and logging'].map((feature, index) => (
-                    <span key={index} className="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-sm">
-                      {feature}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Projects */}
-        <section id="projects" className="group">
-          <h2 className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-            Featured Projects
-          </h2>
-          <div className="grid  gap-8 cursor-pointer">
-            {projects.map((project, index) => (
-              <div key={index} className={`backdrop-blur-xl ${darkMode ? 'bg-white/10' : 'bg-black/10'} rounded-3xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-500 hover:scale-105 hover:shadow-2xl group`}>
-                <div className="text-4xl mb-4">{project.icon}</div>
-                <h3 className="text-xl font-semibold mb-2 text-blue-400">{project.title}</h3>
-                <p className="text-gray-400 mb-4">{project.description}</p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tech.map((tech, techIndex) => (
-                    <span key={techIndex} className="px-2 py-1 bg-purple-500/20 text-purple-400 rounded-full text-xs">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-500">{project.status}</span>
-                  <button 
-                  onClick={() => setShowThesisImage(!showThesisImage)}
-                  className="text-blue-400 hover:text-blue-300 transition-colors duration-300 cursor-pointer">
-                    
-                    View Details →
-                  </button>
-                </div>
-                 {/* Image that appears when View Details is clicked */}
-                {showThesisImage && (
-                  <div className="mt-6 overflow-hidden rounded-xl transition-all duration-500 ease-in-out">
-                    <img 
-                      src="/images/TEst.png" 
-                      alt="Thesis Project" 
-                      className="w-full h-full object-cover rounded-xl shadow-lg hover:scale-105 transition-transform duration-300"
-                    />
-                    <p className="text-center text-gray-400 text-sm mt-2">
-                      Gas Leak Detection System
-                    </p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Work Experience */}
-        <section id="experience" className="group">
-          <h2 className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-            Work Experience
-          </h2>
-          <div className={`backdrop-blur-xl ${darkMode ? 'bg-white/10' : 'bg-black/10'} cursor-pointer rounded-3xl p-8 border border-white/20 hover:bg-white/20 transition-all duration-500 group-hover:scale-105 hover:shadow-2xl`}>
-            <div className="flex items-start gap-6">
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-2xl">
-                💼
-              </div>
-              <div className="flex-1">
-                <p className="text-xl font-medium">On-the-Job Training</p>
-                <p className="text-gray-400 mt-2">
-                  I participated in the development of a church project based in Butuan City, which aimed to upgrade their old system for booking and management; the project's scope covers the entire Philippines and provided me with hands-on experience in full-stack development.
-                </p>
-                <div className="flex justify-end mt-5">
-                  <button 
-                    onClick={() => setShowWorkImage(!showWorkImage)}
-                    className="text-blue-400 hover:text-blue-300 transition-colors duration-300 cursor-pointer"
+        <div className="grid gap-6 md:grid-cols-2">
+          {featuredApps.map((app) => (
+            <article
+              key={app.title}
+              className={`group rounded-3xl border p-6 transition hover:-translate-y-1 hover:shadow-2xl ${
+                darkMode
+                  ? "border-white/10 bg-gradient-to-br from-slate-900/80 to-slate-800/60"
+                  : "border-slate-200 bg-gradient-to-br from-white to-slate-100"
+              }`}
+            >
+              <p className="mb-3 inline-flex rounded-full bg-blue-500/15 px-3 py-1 text-xs font-semibold text-blue-400">
+                {app.badge}
+              </p>
+              <h3 className="mb-2 text-2xl font-semibold">{app.title}</h3>
+              <p className={`mb-4 text-sm ${darkMode ? "text-slate-300" : "text-slate-600"}`}>{app.description}</p>
+              {app.image ? (
+                <img
+                  src={app.image}
+                  alt={app.title}
+                  className="mb-4 h-44 w-full cursor-zoom-in rounded-2xl object-cover shadow-lg transition hover:opacity-90"
+                  onClick={() => setSelectedImage({ src: app.image, alt: app.title })}
+                />
+              ) : null}
+              <div className="mb-5 flex flex-wrap gap-2">
+                {app.tech.map((item) => (
+                  <span
+                    key={item}
+                    className={`rounded-full px-3 py-1 text-xs ${
+                      darkMode ? "bg-white/10 text-slate-200" : "bg-slate-200 text-slate-700"
+                    }`}
                   >
-                    View Details →
-                  </button>
-                </div>
-                
-                {/* Image that appears when View Details is clicked */}
-                {showWorkImage && (
-                  <div className="mt-6 overflow-hidden rounded-xl transition-all duration-500 ease-in-out">
-                    <img 
-                      src="/images/DIO.png" 
-                      alt="Work Experience Project" 
-                      className="w-full h-full object-cover rounded-xl shadow-lg hover:scale-105 transition-transform duration-300"
-                    />
-                    <p className="text-center text-gray-400 text-sm mt-2">
-                      Church Management System Development Project
-                    </p>
-                  </div>
-                )}
+                    {item}
+                  </span>
+                ))}
               </div>
-            </div>
-          </div>
-        </section>
+              {app.url ? (
+                <a
+                  href={app.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-blue-400 transition group-hover:text-blue-300"
+                >
+                  Visit Live Site <FaExternalLinkAlt className="h-3 w-3" />
+                </a>
+              ) : (
+                <p className={`text-sm font-semibold ${darkMode ? "text-slate-300" : "text-slate-600"}`}>
+                  Academic project highlight
+                </p>
+              )}
+            </article>
+          ))}
+        </div>
+      </section>
 
-        {/* Skills */}
-          <section id="skills" className="group">
-            <h2 className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-             Technical Skills
-           </h2>
-           <div className={`backdrop-blur-xl ${darkMode ? 'bg-white/10' : 'bg-black/10'} cursor-pointer rounded-3xl p-8 border border-white/20 hover:bg-white/20 hover:scale-[1.02] hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-500/20 hover:border-purple-400/30 transition-all duration-500 transform`}>
-             <div className="grid md:grid-cols-2 gap-12">
-                <div>
-                  <h4 className="text-xl font-semibold mb-6 text-blue-400">Programming Languages</h4>
-                 <p className="text-gray-400 mb-6">JavaScript, HTML, CSS</p>
-               </div>
-               <div>
-                 <h4 className="text-xl font-semibold mb-6 text-purple-400">Web Development</h4>
-                 <p className="text-gray-400 mb-6">Next.js, Tailwind CSS</p>
-               </div>
-             </div>
-            </div>
-          </section>
+      <section id="skills" className="relative z-10 mx-auto max-w-6xl px-4 py-16">
+        <h2 className="mb-8 text-3xl font-bold md:text-4xl">Technical stack</h2>
+        <div className="flex flex-wrap gap-3">
+          {skills.map((skill) => (
+            <span
+              key={skill}
+              className={`rounded-full border px-4 py-2 text-sm ${
+                darkMode ? "border-white/15 bg-white/5" : "border-slate-300 bg-white"
+              }`}
+            >
+              {skill}
+            </span>
+          ))}
+        </div>
+      </section>
 
-        {/* Contact */}
-        <section id="contact" className="group">
-          <h2 className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-            Contact
-          </h2>
-          <div className={`backdrop-blur-xl ${darkMode ? 'bg-white/10' : 'bg-black/10'} rounded-3xl p-8 border border-white/20 hover:bg-white/20 transition-all duration-500 group-hover:scale-105 hover:shadow-2xl text-center space-y-6`}>
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
-              <a 
-                href="mailto:anocnelvimjohn@gmail.com" 
-                className="flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-xl"
-              >
-                <EnvelopeIcon className="h-5 w-5" />
+      <section id="contact" className="relative z-10 mx-auto max-w-6xl px-4 pb-24 pt-16">
+        <div
+          className={`rounded-3xl border p-8 ${
+            darkMode ? "border-white/10 bg-slate-900/70" : "border-slate-200 bg-white/90"
+          }`}
+        >
+          <h2 className="mb-3 text-3xl font-bold">Let&apos;s build something great</h2>
+          <p className={`mb-6 ${darkMode ? "text-slate-300" : "text-slate-600"}`}>
+            I am available for entry-level opportunities and freelance web projects.
+          </p>
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div className="space-y-3">
+              <a href="mailto:anocnelvimjohn@gmail.com" className="flex items-center gap-3 hover:text-blue-400">
+                <EnvelopeIcon className="h-5 w-5 text-blue-400" />
                 <span>anocnelvimjohn@gmail.com</span>
               </a>
-              <a 
-                href="https://github.com/StinkyJeans" 
-                className="flex items-center gap-3 px-6 py-3 border border-white/30 rounded-full hover:bg-white/10 transition-all duration-300"
-              >
-                <FaGithub className="w-5 h-5" />
-                <span>github.com/StinkyJeans?tab=repositories</span>
-              </a>
-              <div className="flex items-center gap-3 px-6 py-3 text-gray-400">
-                <MapPinIcon className="h-5 w-5 text-red-400" />
+              <p className="flex items-center gap-3">
+                <MapPinIcon className="h-5 w-5 text-pink-400" />
                 <span>Butuan City, Philippines</span>
-              </div>
+              </p>
             </div>
+            <a
+              href="https://github.com/StinkyJeans"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-violet-600 px-6 py-3 text-sm font-semibold text-white transition hover:scale-105"
+            >
+              See GitHub Projects
+            </a>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
 
-      {/* Floating Download Button */}
-      <button className="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 z-30">
-        <DocumentArrowDownIcon className="w-6 h-6 text-white" />
-      </button>
-
-      {/* Contact Form Modal */}
-      <ContactForm />
+      <ConctactForm
+        isOpen={showContactModal}
+        onClose={() => setShowContactModal(false)}
+        darkMode={darkMode}
+      />
+      <ImageModal selectedImage={selectedImage} onClose={() => setSelectedImage(null)} />
     </main>
   );
 }
