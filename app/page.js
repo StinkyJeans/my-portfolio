@@ -12,6 +12,7 @@ export default function Portfolio() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showContactModal, setShowContactModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [showPdfModal, setShowPdfModal] = useState(null);
   const fullText = "Nelvim John M. Anoc";
 
   const skills = [
@@ -43,6 +44,7 @@ export default function Portfolio() {
       description:
         "A personal resume site highlighting my vibe-coding workflow and AI-assisted full-stack development approach.",
       url: "https://resume-nelvim.vercel.app/resume_nelvim.html",
+      pdfUrl: "/resume_nelvim.pdf",
       badge: "Personal Branding",
       tech: ["Next.js", "JavaScript", "Claude + Cursor"],
     },
@@ -53,6 +55,8 @@ export default function Portfolio() {
       url: "https://totallynormalstore.vercel.app/",
       badge: "Ecommerce",
       tech: ["Next.js", "Frontend UI", "Deployment"],
+      images: ["/images/totally-normal-store.png"],
+      imagesLabel: "Preview",
     },
     {
       title: "Tally POS & Inventory System",
@@ -67,6 +71,7 @@ export default function Portfolio() {
         "/images/tally-admin-sales.png",
         "/images/tally-admin-audit.png",
       ],
+      imagesLabel: "Admin Screens",
     },
   ];
 
@@ -118,6 +123,7 @@ export default function Portfolio() {
       if (event.key === "Escape") {
         setShowContactModal(false);
         setSelectedImage(null);
+        setShowPdfModal(null);
       }
     };
 
@@ -272,12 +278,12 @@ export default function Portfolio() {
         </div>
       </section>
 
-      <section id="projects" className="relative z-10 mx-auto max-w-6xl px-4 py-16">
-        <h3 className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-blue-400">Featured Work</h3>
-        <h2 className="mb-10 text-3xl font-bold md:text-4xl">Featured projects and deployed apps</h2>
+        <section id="projects" className="relative z-10 mx-auto max-w-6xl px-4 py-16">
+          <h3 className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-blue-400">Featured Work</h3>
+          <h2 className="mb-10 text-3xl font-bold md:text-4xl">Featured projects and deployed apps</h2>
 
-        <div className="grid gap-6 md:grid-cols-2">
-          {featuredApps.map((app) => (
+          <div className="grid gap-6 md:grid-cols-2">
+            {featuredApps.map((app) => (
             <article
               key={app.title}
               className={`group rounded-3xl border p-6 transition hover:-translate-y-1 hover:shadow-2xl ${
@@ -302,7 +308,7 @@ export default function Portfolio() {
               {app.images ? (
                 <div className="mb-4">
                   <p className={`mb-2 text-xs font-semibold uppercase tracking-wide ${darkMode ? "text-slate-300" : "text-slate-600"}`}>
-                    Admin Screens
+                    {app.imagesLabel || "Screenshots"}
                   </p>
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                     {app.images.map((imageSrc, imageIndex) => (
@@ -314,7 +320,10 @@ export default function Portfolio() {
                         onClick={() =>
                           setSelectedImage({
                             src: imageSrc,
-                            alt: `${app.title} admin screen ${imageIndex + 1}`,
+                            alt: `${app.title} ${imageIndex + 1}`,
+                            images: app.images,
+                            currentIndex: imageIndex,
+                            altPrefix: app.title,
                           })
                         }
                       />
@@ -334,16 +343,27 @@ export default function Portfolio() {
                   </span>
                 ))}
               </div>
-              {app.url ? (
+              {app.url || app.pdfUrl ? (
                 <div className="flex flex-wrap gap-3">
-                  <a
-                    href={app.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-2 text-sm font-semibold text-blue-400 transition group-hover:text-blue-300"
-                  >
-                    Open App <FaExternalLinkAlt className="h-3 w-3" />
-                  </a>
+                  {app.pdfUrl ? (
+                    <button
+                      type="button"
+                      onClick={() => setShowPdfModal(app.pdfUrl)}
+                      className="inline-flex items-center gap-2 text-sm font-semibold text-blue-400 transition hover:text-blue-300"
+                    >
+                      View PDF
+                    </button>
+                  ) : null}
+                  {app.url ? (
+                    <a
+                      href={app.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 text-sm font-semibold text-blue-400 transition group-hover:text-blue-300"
+                    >
+                      {app.pdfUrl ? "Open site" : "Open App"} <FaExternalLinkAlt className="h-3 w-3" />
+                    </a>
+                  ) : null}
                   {app.secondaryUrl ? (
                     <a
                       href={app.secondaryUrl}
@@ -419,7 +439,46 @@ export default function Portfolio() {
         onClose={() => setShowContactModal(false)}
         darkMode={darkMode}
       />
-      <ImageModal selectedImage={selectedImage} onClose={() => setSelectedImage(null)} />
+      <ImageModal
+        selectedImage={selectedImage}
+        onClose={() => setSelectedImage(null)}
+        onNavigate={(newIndex) => {
+          if (!selectedImage?.images) return;
+          setSelectedImage({
+            ...selectedImage,
+            src: selectedImage.images[newIndex],
+            currentIndex: newIndex,
+            alt: selectedImage.altPrefix ? `${selectedImage.altPrefix} ${newIndex + 1}` : selectedImage.alt,
+          });
+        }}
+      />
+      {showPdfModal ? (
+        <div
+          className="fixed inset-0 z-[70] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+          onClick={() => setShowPdfModal(null)}
+        >
+          <div
+            className="flex h-[90vh] w-full max-w-4xl flex-col rounded-2xl border border-white/20 bg-slate-900 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between border-b border-white/10 px-4 py-2">
+              <span className="text-sm font-medium text-white">Resume (PDF)</span>
+              <button
+                type="button"
+                onClick={() => setShowPdfModal(null)}
+                className="rounded p-1 text-slate-400 hover:bg-white/10 hover:text-white"
+              >
+                ×
+              </button>
+            </div>
+            <iframe
+              src={showPdfModal}
+              title="Resume PDF"
+              className="flex-1 rounded-b-2xl"
+            />
+          </div>
+        </div>
+      ) : null}
     </main>
   );
 }
